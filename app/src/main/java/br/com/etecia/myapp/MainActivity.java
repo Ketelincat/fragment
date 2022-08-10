@@ -1,14 +1,62 @@
 package br.com.etecia.myapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
+    cachorrofragment cachorrofragment = new cachorrofragment();
+    PeixeFragment PeixeFragment = new PeixeFragment();
+    GatoFragment GatoFragment = new GatoFragment();
+
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        bottomNavigationView = findViewById(R.id.bottomNavView);
+
+        getSupportFragmentManager().
+                beginTransaction().
+                replace(R.id.frmContainer, cachorrofragment).commit();
+
+        BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.mNotifications);
+        badgeDrawable.setVisible(true);
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mHome:
+                        getSupportFragmentManager().
+                                beginTransaction().
+                                replace(R.id.frmContainer, cachorrofragment).commit();
+                        return true;
+                    case R.id.mNotifications:
+                        getSupportFragmentManager().
+                                beginTransaction().
+                                replace(R.id.frmContainer, PeixeFragment).commit();
+                        return true;
+                    case R.id.mSettings:
+                        getSupportFragmentManager().
+                                beginTransaction().
+                                replace(R.id.frmContainer, GatoFragment).commit();
+                        return true;
+                }
+
+
+                return false;
+            }
+        });
+
+
     }
 }
